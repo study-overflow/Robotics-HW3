@@ -1,0 +1,57 @@
+<mujoco model="3dof_planar_arm">
+  <compiler angle="radian" autolimits="true"/>
+
+  <option timestep="0.002" integrator="RK4">
+    <flag warmstart="enable"/>
+  </option>
+
+  <default>
+    <joint type="hinge" axis="0 0 1" damping="0.05"/>
+    <geom type="capsule" size="0.025" rgba="0.8 0.6 0.4 1"/>
+    <site type="sphere" size="0.03" rgba="1 0 0 1"/>
+  </default>
+
+  <worldbody>
+    <body name="base" pos="0 0 0">
+      <inertial pos="0 0 0" mass="1" diaginertia="0.1 0.1 0.1"/>
+      <geom type="cylinder" size="0.05 0.02" rgba="0.5 0.5 0.5 1"/>
+      <!-- Link 1 -->
+      <body name="link1" pos="0 0 0">
+        <joint name="joint1" type="hinge" axis="0 0 1" pos="0 0 0" range="-3.14 3.14" damping="0.05"/>
+        <geom fromto="0 0 0 1 0 0" size="0.03" rgba="0.8 0.6 0.4 1"/>
+        <inertial pos="0.5 0 0" mass="1.0" diaginertia="0.01 0.01 0.01"/>
+        <!-- Link 2 -->
+        <body name="link2" pos="1 0 0">
+          <joint name="joint2" type="hinge" axis="0 0 1" pos="0 0 0" range="-3.14 3.14" damping="0.05"/>
+          <geom fromto="0 0 0 1 0 0" size="0.03" rgba="0.8 0.6 0.4 1"/>
+          <inertial pos="0.5 0 0" mass="0.8" diaginertia="0.01 0.01 0.01"/>
+          <!-- Link 3 -->
+          <body name="link3" pos="1 0 0">
+            <joint name="joint3" type="hinge" axis="0 0 1" pos="0 0 0" range="-3.14 3.14" damping="0.05"/>
+            <geom fromto="0 0 0 1 0 0" size="0.03" rgba="0.8 0.6 0.4 1"/>
+            <inertial pos="0.5 0 0" mass="0.6" diaginertia="0.01 0.01 0.01"/>
+            <site name="end_effector" pos="1 0 0" rgba="1 0 0 1"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor joint="joint1" name="motor1" gear="1" ctrlrange="-100 100"/>
+    <motor joint="joint2" name="motor2" gear="1" ctrlrange="-100 100"/>
+    <motor joint="joint3" name="motor3" gear="1" ctrlrange="-100 100"/>
+  </actuator>
+
+  <sensor>
+    <jointpos joint="joint1" name="joint1_pos"/>
+    <jointpos joint="joint2" name="joint2_pos"/>
+    <jointpos joint="joint3" name="joint3_pos"/>
+    <jointvel joint="joint1" name="joint1_vel"/>
+    <jointvel joint="joint2" name="joint2_vel"/>
+    <jointvel joint="joint3" name="joint3_vel"/>
+    <actuatorfrc actuator="motor1" name="motor1_force"/>
+    <actuatorfrc actuator="motor2" name="motor2_force"/>
+    <actuatorfrc actuator="motor3" name="motor3_force"/>
+  </sensor>
+</mujoco>
